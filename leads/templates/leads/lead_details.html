@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/">Back to home</a>
+
+<hr>
+
+<h3> Details </h3>
+<ul>
+    <li><strong>Name </strong>{{ lead }}</li>
+    <li><strong>Age: </strong>{{ lead.age }}</li>
+    <li><strong>Agent: </strong>{{ lead.agent }}</li>
+</ul>
+
+
+{% endblock  %}
