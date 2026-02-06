@@ -1,13 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView, DetailView
 from . import models
 from . import forms
 
-def home_page(request):
-    leads = models.Lead.objects.all()
-    ctx = {
-        "leads": leads,
-    }
-    return render(request, 'home.html', ctx)
+
+# Function based view
+""" def home_page(request):
+    return render(request, 'leads/home.html')
 
 def lead_list(request):
     leads = models.Lead.objects.all()
@@ -59,3 +58,47 @@ def lead_delete(request, pk):
     lead = models.Lead.objects.get(pk=pk)
     lead.delete()
     return redirect('leads:lead_list')
+ """
+
+# class based view
+class HomeView(TemplateView):
+    template_name = "leads/home.html"
+
+class LeadListView(ListView):
+    template_name = "leads/lead_list.html"
+    queryset = models.Lead.objects.all()
+    context_object_name = "leads"
+
+class LeadDetailView(DetailView):
+    template_name = "leads/lead_details.html"
+    queryset = models.Lead.objects.all()
+    context_object_name = "lead"
+
+class LeadCreateView(CreateView):
+    template_name = "leads/lead_create.html"
+    form_class = forms.DrawForm
+
+    def get_success_url(self):
+        return reverse('leads:lead_list')
+
+class LeadUpdateView(UpdateView):
+    template_name = "leads/lead_update.html"
+    form_class = forms.DrawForm
+    queryset = models.Lead.objects.all()
+    context_object_name = "lead"
+
+    def get_success_url(self):
+        return reverse('leads:lead_details', kwargs={"pk": self.object.pk})
+
+class LeadDeleteView(DeleteView):
+    template_name = "leads/lead_delete.html"
+    queryset = models.Lead.objects.all()
+    context_object_name = "lead"
+
+    def get_success_url(self):
+        return reverse('leads:lead_list')
+
+
+
+
+
