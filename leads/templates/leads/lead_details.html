@@ -7,6 +7,10 @@
 <hr>
 
 <h3> Details </h3>
+<hr>
+<a href="{% url 'leads:lead_update' lead.pk %}"> Update </a>
+&nbsp;
+<a href="{% url 'leads:lead_delete' lead.pk %}"> Delete </a>
 <ul>
     <li><strong>Name </strong>{{ lead }}</li>
     <li><strong>Age: </strong>{{ lead.age }}</li>

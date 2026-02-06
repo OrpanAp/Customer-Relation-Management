@@ -7,6 +7,8 @@
 <hr>
 
 <h3> Leads </h3>
+<hr>
+<a href="{% url 'leads:lead_create' %}">Add</a>
 <ul>
     {% for lead in leads %}
     <li><a href="{% url 'leads:lead_details' lead.pk %}">{{ lead }}</a></li>

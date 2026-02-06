@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/">Back to home</a>
+
+<hr>
+
+<form action="{% url 'leads:lead_update' pk %}" method="post">
+    {% csrf_token %}
+    <h3>Update lead details</h3>
+
+    <br>
+
+    {{ form }}
+
+    <button type="submit">Save</button>
+</form>
+
+
+{% endblock  %}
