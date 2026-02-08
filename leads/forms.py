@@ -11,5 +11,5 @@ class DrawForm(forms.ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = models.User
-        fields = ('username',)
+        fields = ('username', 'email', 'password1', 'password2',)
         field_classes = {'username': UsernameField}

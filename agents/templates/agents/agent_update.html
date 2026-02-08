@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{% url 'agents:agent_update' agent.pk %}" method="post">
+    {% csrf_token %}
+    <h3>Update Agent details</h3>
+
+    <br>
+
+    {{ form }}
+
+    <button type="submit">Save</button>
+</form>
+
+
+{% endblock  %}

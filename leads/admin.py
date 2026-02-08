@@ -3,5 +3,6 @@ from . import models
 
 
 admin.site.register(models.User)
+admin.site.register(models.UserProfile)
 admin.site.register(models.Lead)
 admin.site.register(models.Agent)
