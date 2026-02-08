@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, reverse
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views import generic
 from . import models
 from . import forms
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Function based view
@@ -61,27 +62,27 @@ def lead_delete(request, pk):
  """
 
 # class based view
-class HomeView(TemplateView):
+class HomeView(generic.TemplateView):
     template_name = "leads/home.html"
 
-class LeadListView(ListView):
+class LeadListView(LoginRequiredMixin, generic.ListView):
     template_name = "leads/lead_list.html"
     queryset = models.Lead.objects.all()
     context_object_name = "leads"
 
-class LeadDetailView(DetailView):
+class LeadDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "leads/lead_details.html"
     queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
-class LeadCreateView(CreateView):
+class LeadCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "leads/lead_create.html"
     form_class = forms.DrawForm
 
     def get_success_url(self):
         return reverse('leads:lead_list')
 
-class LeadUpdateView(UpdateView):
+class LeadUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "leads/lead_update.html"
     form_class = forms.DrawForm
     queryset = models.Lead.objects.all()
@@ -90,13 +91,22 @@ class LeadUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('leads:lead_details', kwargs={"pk": self.object.pk})
 
-class LeadDeleteView(DeleteView):
+class LeadDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "leads/lead_delete.html"
     queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
     def get_success_url(self):
         return reverse('leads:lead_list')
+
+class RegistrationView(generic.CreateView):
+    template_name = "registration/register.html"
+    form_class = forms.CustomUserCreationForm
+
+    def get_success_url(self):
+        return reverse('login')
+
+
 
 
 

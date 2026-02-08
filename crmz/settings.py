@@ -117,5 +117,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [ 
+    BASE_DIR / 'static' 
+]
+
+STATIC_ROOT = 'static_root'
+
 
 AUTH_USER_MODEL = 'leads.User'
+
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/leads'
+LOGOUT_REDIRECT_URL = '/login'
