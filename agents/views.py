@@ -5,7 +5,6 @@ from django.views import generic
 from leads.models import Agent
 from . import forms
 from django.core.mail import send_mail
-import random
 
 
 
