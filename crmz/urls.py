@@ -16,16 +16,33 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LoginView, LogoutView
 from leads.views import RegistrationView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import (
+    LoginView,
+    LogoutView,
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegistrationView.as_view(), name='register'),
+
+    # Password reset flow
+    path('reset_password/', PasswordResetView.as_view(), name='password_reset'),
+    path('reset_password_done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset_complete/', PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
     path('', include('leads.urls', namespace='leads')),
     path('', include('agents.urls', namespace='agents')),
 ]
@@ -33,3 +50,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT) 
+    
+    
+
+

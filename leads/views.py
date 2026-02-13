@@ -3,6 +3,8 @@ from django.views import generic
 from . import models
 from . import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
+from agents.mixins import OrganizerAndLoginRequiredMixin
+from django.core.mail import send_mail
 
 
 # Function based view
@@ -67,37 +69,74 @@ class HomeView(generic.TemplateView):
 
 class LeadListView(LoginRequiredMixin, generic.ListView):
     template_name = "leads/lead_list.html"
-    queryset = models.Lead.objects.all()
     context_object_name = "leads"
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_organizer:
+            queryset = models.Lead.objects.filter(organization=user.userprofile)
+        else:
+            queryset = models.Lead.objects.filter(organization=user.agent.organization)
+            queryset = queryset.filter(agent__user = user)
+            
+        return queryset
+    
 
 class LeadDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "leads/lead_details.html"
-    queryset = models.Lead.objects.all()
     context_object_name = "lead"
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.is_organizer:
+            queryset = models.Lead.objects.filter(organization=user.userprofile)
+        else:
+            queryset = models.Lead.objects.filter(organization=user.agent.organization)
+            queryset = queryset.filter(agent__user = user)
+            
+        return queryset
 
-class LeadCreateView(LoginRequiredMixin, generic.CreateView):
+class LeadCreateView(OrganizerAndLoginRequiredMixin, generic.CreateView):
     template_name = "leads/lead_create.html"
     form_class = forms.DrawForm
 
     def get_success_url(self):
         return reverse('leads:lead_list')
+    
+    def form_valid(self, form):
+        send_mail (
+            subject='A new lead has been created',
+            message='Visit the new lead in our site',
+            from_email='test@mail.com',
+            recipient_list=['test2@mail.com']
+        )
+        return super(LeadCreateView, self).form_valid(form)
+    
 
-class LeadUpdateView(LoginRequiredMixin, generic.UpdateView):
+class LeadUpdateView(OrganizerAndLoginRequiredMixin, generic.UpdateView):
     template_name = "leads/lead_update.html"
     form_class = forms.DrawForm
-    queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
     def get_success_url(self):
         return reverse('leads:lead_details', kwargs={"pk": self.object.pk})
+    
+    def get_queryset(self):
+        user = self.request.user
+        return models.Lead.objects.filter(organization=user.userprofile)
 
-class LeadDeleteView(LoginRequiredMixin, generic.DeleteView):
+class LeadDeleteView(OrganizerAndLoginRequiredMixin, generic.DeleteView):
     template_name = "leads/lead_delete.html"
-    queryset = models.Lead.objects.all()
     context_object_name = "lead"
 
     def get_success_url(self):
         return reverse('leads:lead_list')
+    
+    def get_queryset(self):
+        user = self.request.user
+        return models.Lead.objects.filter(organization=user.userprofile)
 
 class RegistrationView(generic.CreateView):
     template_name = "registration/register.html"

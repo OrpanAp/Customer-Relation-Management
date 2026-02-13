@@ -10,10 +10,11 @@
         <div>
             <h1 class='text-4xl text-gray-800'>Leads</h1>
         </div>
-
+        {% if request.user.is_organizer %}
         <div>
             <a href="{% url 'leads:lead_create' %}" class="flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded mb-2">Add new lead</a>
         </div>
+        {% endif %}
 
     </div>
 
