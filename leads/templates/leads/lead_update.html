@@ -1,16 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="{% url 'leads:lead_update' lead.pk %}" method="post">
-    {% csrf_token %}
-    <h3>Update lead details</h3>
+{% load tailwind_filters %}
+<hr>
+<div class="max-w-[150px] ml-2">
+    <a href="/" class="flex ml-auto text-blue-500 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded mb-2 mt-3">Back to home</a>
+</div>
 
-    <br>
-
-    {{ form }}
-
-    <button type="submit">Save</button>
-</form>
-
+<div class="flex items-center flex-col">
+    <form action="{% url 'leads:lead_update' lead.pk %}" method="post" class="w-full max-w-[500px]">
+        {% csrf_token %}
+        <h1 class='text-4xl text-gray-800'>Update lead details</h1>
+        
+        <br>
+        
+        {{ form|crispy }}
+        
+        <button type="submit" class="flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded mb-2">Update</button>
+    </form>
+</div>
+    
 
 {% endblock  %}

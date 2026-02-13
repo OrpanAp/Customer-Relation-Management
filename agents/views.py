@@ -5,6 +5,7 @@ from django.views import generic
 from leads.models import Agent
 from . import forms
 from django.core.mail import send_mail
+import random
 
 
 
@@ -28,7 +29,7 @@ class AgentCreateView(OrganizerAndLoginRequiredMixin, generic.CreateView):
         user = form.save(commit = False)
         user.is_agent = True
         user.is_organizer = False
-        user.set_unusable_password()
+        user.set_password(f"{random.randint(0, 100000)}")
         user.save()
         
         Agent.objects.create(

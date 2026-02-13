@@ -20,6 +20,10 @@ urlpatterns = [
     path('leads/add/', views.LeadCreateView.as_view(), name="lead_create"),
     path('leads/update/<int:pk>/', views.LeadUpdateView.as_view(), name="lead_update"),
     path('leads/delete/<int:pk>/', views.LeadDeleteView.as_view(), name="lead_delete"),
+    path('leads/assign_agent/<int:pk>/', views.AgentAssignView.as_view(), name="assign_agent"),
+    path('leads/categories/', views.CategoryListView.as_view(), name="categories"),
+    path('leads/categories/details/<int:pk>/', views.CategoryDetailView.as_view(), name="category_details"),
+    path('leads/categories/update/<int:pk>/', views.LeadCategoryUpdateView.as_view(), name="category_update"),
 ]
 
 

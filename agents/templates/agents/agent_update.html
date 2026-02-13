@@ -1,16 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="{% url 'agents:agent_update' agent.pk %}" method="post">
-    {% csrf_token %}
-    <h3>Update Agent details</h3>
-
-    <br>
-
-    {{ form }}
-
-    <button type="submit">Save</button>
-</form>
+{% load tailwind_filters %}
+<div class="flex items-center flex-col"> 
+    
+    <form action="{% url 'agents:agent_update' agent.pk %}" method="post" class="w-full max-w-[500px]">
+        {% csrf_token %}
+        <h1 class='text-4xl text-gray-800'>Update Agent details</h1>
+        
+        <br>
+        
+        {{ form|crispy }}
+        
+        <button type="submit" class="flex ml-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded mb-2">Update</button>
+    </form>
+</div>
 
 
 {% endblock  %}
